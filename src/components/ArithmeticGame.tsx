@@ -130,6 +130,8 @@ const ArithmeticGame = ({ initialOperationType, onReturnHome }: ArithmeticGamePr
           onRestart={restartGame} 
           onViewLeaderboard={viewLeaderboard}
           gameType={operationType}
+          currentLevel={currentLevel}
+          maxLevels={maxLevels}
         />
       )}
       
