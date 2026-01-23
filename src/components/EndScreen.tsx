@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Confetti } from "./Confetti";
 import { useEffect, useState } from "react";
 import { LeaderboardEntry } from "./LeaderboardTable";
-import { saveLeaderboardEntry } from "@/lib/supabase";
+import { saveLeaderboardEntry, saveProgress } from "@/lib/supabase";
 import { toast } from "sonner";
 
 interface EndScreenProps {
@@ -12,9 +12,11 @@ interface EndScreenProps {
   onRestart: () => void;
   onViewLeaderboard: () => void;
   gameType: string;
+  currentLevel?: number;
+  maxLevels?: number;
 }
 
-const EndScreen: React.FC<EndScreenProps> = ({ score, onRestart, onViewLeaderboard, gameType }) => {
+const EndScreen: React.FC<EndScreenProps> = ({ score, onRestart, onViewLeaderboard, gameType, currentLevel = 20, maxLevels = 20 }) => {
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
@@ -42,15 +44,21 @@ const EndScreen: React.FC<EndScreenProps> = ({ score, onRestart, onViewLeaderboa
         // Tenta salvar no Supabase
         setIsSaving(true);
         try {
-          const success = await saveLeaderboardEntry({
+          // Salvar no leaderboard
+          const leaderboardSuccess = await saveLeaderboardEntry({
             name: playerInfo.name,
             grade: playerInfo.grade,
             score,
             game_type: gameType === "frações" ? "Frações" : `Aritmética (${gameType})`
           });
           
-          if (success) {
-            toast.success("Pontuação salva com sucesso!");
+          // Salvar progresso (ao finalizar as 20 fases)
+          const progressSuccess = await saveProgress(score, gameType, currentLevel, maxLevels);
+          
+          if (leaderboardSuccess && progressSuccess) {
+            toast.success("Pontuação e progresso salvos com sucesso!");
+          } else if (leaderboardSuccess || progressSuccess) {
+            toast.info("Alguns dados foram salvos localmente");
           } else {
             toast.info("Pontuação salva localmente");
           }
@@ -64,7 +72,7 @@ const EndScreen: React.FC<EndScreenProps> = ({ score, onRestart, onViewLeaderboa
     };
 
     saveScore();
-  }, [score, gameType]);
+  }, [score, gameType, currentLevel, maxLevels]);
 
   return (
     <motion.div 
