@@ -6,7 +6,7 @@ import DropZone from "./DropZone";
 import { useSoundEffects } from "./SoundEffects";
 import { Button } from "@/components/ui/button";
 import { createGradeSpecificProblem } from "@/utils/gradeProblems";
-import { saveScoreToLeaderboard } from "@/lib/supabase";
+import { saveScoreToLeaderboard, saveProgress } from "@/lib/supabase";
 
 interface GameScreenProps {
   currentLevel: number;
@@ -186,6 +186,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
             variant="outline"
             onClick={async () => {
               await saveScoreToLeaderboard(score, operationType);
+              await saveProgress(score, operationType, currentLevel, maxLevels);
               if (onReturnHome) onReturnHome();
             }}
             className="border-game-primary text-game-primary hover:bg-game-primary hover:text-white"
