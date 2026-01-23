@@ -2,8 +2,8 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
 
-const SUPABASE_URL = "https://ncuvweswnvoisjgaecnh.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5jdXZ3ZXN3bnZvaXNqZ2FlY25oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ0MjA4NTUsImV4cCI6MjA1OTk5Njg1NX0.brNUm4P63OjZfE_B2hBwvrazLmg3q-K7IxmKWRyjIJY";
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://ncuvweswnvoisjgaecnh.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5jdXZ3ZXN3bnZvaXNqZ2FlY25oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ0MjA4NTUsImV4cCI6MjA1OTk5Njg1NX0.brNUm4P63OjZfE_B2hBwvrazLmg3q-K7IxmKWRyjIJY";
 
 // Criar o cliente Supabase
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
@@ -78,4 +78,64 @@ export async function saveScoreToLeaderboard(score: number, gameType: string): P
     score,
     game_type: gameType
   });
+}
+
+// Tipo para entrada de progresso
+export type ProgressEntryDB = {
+  nome: string;
+  grade: string;
+  score: number;
+  game_type: string;
+  Level: string;
+};
+
+// Função para salvar progresso na tabela progress
+export async function saveProgress(
+  score: number, 
+  gameType: string, 
+  currentLevel: number, 
+  maxLevels: number
+): Promise<boolean> {
+  try {
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo") || "{}");
+    if (!playerInfo.name || !playerInfo.grade) {
+      console.error('Informações do jogador não encontradas');
+      return false;
+    }
+
+    // Formatar o tipo de jogo
+    const formattedGameType = gameType === "frações" ? "Frações" : 
+                              gameType === "soma" ? "Soma" :
+                              gameType === "subtracao" ? "Subtração" :
+                              gameType === "multiplicacao" ? "Multiplicação" :
+                              gameType === "divisao" ? "Divisão" : gameType;
+
+    // Criar string do nível (ex: "20/20" ou "8/20")
+    const levelString = `${currentLevel + 1}/${maxLevels}`;
+
+    // Preparar dados para inserção
+    const progressEntry = {
+      nome: playerInfo.name,
+      grade: playerInfo.grade,
+      score: score,
+      game_type: formattedGameType,
+      Level: levelString
+    };
+
+    // Inserir na tabela progress
+    const { error } = await supabase
+      .from('progress')
+      .insert([progressEntry]);
+
+    if (error) {
+      console.error('Erro ao salvar progresso:', error);
+      return false;
+    }
+
+    console.log('Progresso salvo com sucesso:', progressEntry);
+    return true;
+  } catch (err) {
+    console.error('Erro ao salvar progresso:', err);
+    return false;
+  }
 }
