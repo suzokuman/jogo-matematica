@@ -97,6 +97,8 @@ const FractionsGame = ({ onReturnHome }: FractionsGameProps) => {
         onRestart={restartGame} 
         onViewLeaderboard={viewLeaderboard}
         gameType="frações"
+        currentLevel={currentLevel}
+        maxLevels={fractionSequence.length}
       />
     );
   }
