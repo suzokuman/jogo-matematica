@@ -6,7 +6,7 @@ import FractionDropZone from "./FractionDropZone";
 import PizzaFraction from "./PizzaFraction";
 import { Button } from "@/components/ui/button";
 import { getFractionRangeByGrade, generateNumberInRange } from "@/utils/gradeRanges";
-import { saveScoreToLeaderboard } from "@/lib/supabase";
+import { saveScoreToLeaderboard, saveProgress } from "@/lib/supabase";
 
 interface GamePlayScreenProps {
   currentLevel: number;
@@ -125,6 +125,7 @@ const GamePlayScreen: React.FC<GamePlayScreenProps> = ({
             variant="outline"
             onClick={async () => {
               await saveScoreToLeaderboard(score, "Frações");
+              await saveProgress(score, "frações", currentLevel, maxLevels);
               if (onReturnHome) onReturnHome();
             }}
             className="border-game-primary text-game-primary hover:bg-game-primary hover:text-white"
