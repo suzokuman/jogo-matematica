@@ -23,7 +23,7 @@ const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ entries, isLoading 
       <TableHeader>
         <TableRow>
           <TableHead>Nome</TableHead>
-          <TableHead>Série</TableHead>
+          <TableHead>Nível</TableHead>
           <TableHead>Jogo</TableHead>
           <TableHead>Pontuação</TableHead>
           <TableHead>Data</TableHead>

@@ -32,7 +32,7 @@ const GameSelection: React.FC<GameSelectionProps> = ({
       transition={{ delay: 0.4 }}
     >
       <p className="text-xl mb-2">
-        Olá, <span className="font-bold">{playerName}</span> da <span className="font-bold">{playerGrade}</span>!
+        Olá, <span className="font-bold">{playerName}</span> — <span className="font-bold">Nível {playerGrade}</span>!
       </p>
       <p className="text-lg mb-4">Escolha um jogo para começar:</p>
       

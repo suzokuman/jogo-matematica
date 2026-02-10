@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 const playerSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
-  grade: z.string().min(1, "Série é obrigatória"),
+  grade: z.string().min(1, "Nível é obrigatório"),
 });
 
 export type PlayerFormValues = z.infer<typeof playerSchema>;
@@ -29,15 +29,15 @@ const PlayerForm: React.FC<PlayerFormProps> = ({ onSubmitPlayerInfo }) => {
   });
 
   const gradeOptions = [
-    { value: "1", label: "1º Ano" },
-    { value: "2", label: "2º Ano" },
-    { value: "3", label: "3º Ano" },
-    { value: "4", label: "4º Ano" },
-    { value: "5", label: "5º Ano" },
-    { value: "6", label: "6º Ano" },
-    { value: "7", label: "7º Ano" },
-    { value: "8", label: "8º Ano" },
-    { value: "9", label: "9º Ano" },
+    { value: "1", label: "Nível 1" },
+    { value: "2", label: "Nível 2" },
+    { value: "3", label: "Nível 3" },
+    { value: "4", label: "Nível 4" },
+    { value: "5", label: "Nível 5" },
+    { value: "6", label: "Nível 6" },
+    { value: "7", label: "Nível 7" },
+    { value: "8", label: "Nível 8" },
+    { value: "9", label: "Nível 9" },
   ];
 
   return (
@@ -62,11 +62,11 @@ const PlayerForm: React.FC<PlayerFormProps> = ({ onSubmitPlayerInfo }) => {
           name="grade"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Série</FormLabel>
+              <FormLabel>Nível</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Selecione sua série" />
+                    <SelectValue placeholder="Selecione o Nível" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
