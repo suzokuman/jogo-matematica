@@ -7,10 +7,10 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
+    PostgrestVersion: "14.1"
   }
   public: {
     Tables: {
@@ -35,6 +35,7 @@ export type Database = {
           game_type: string
           grade: string
           id: number
+          Level: number | null
           name: string
           score: number
         }
@@ -43,6 +44,7 @@ export type Database = {
           game_type: string
           grade: string
           id?: number
+          Level?: number | null
           name: string
           score: number
         }
@@ -51,8 +53,39 @@ export type Database = {
           game_type?: string
           grade?: string
           id?: number
+          Level?: number | null
           name?: string
           score?: number
+        }
+        Relationships: []
+      }
+      linksite: {
+        Row: {
+          ano: string | null
+          created_at: string
+          descricao: string | null
+          id: number
+          link: string | null
+          materia: string | null
+          nome_atividade: string | null
+        }
+        Insert: {
+          ano?: string | null
+          created_at?: string
+          descricao?: string | null
+          id?: number
+          link?: string | null
+          materia?: string | null
+          nome_atividade?: string | null
+        }
+        Update: {
+          ano?: string | null
+          created_at?: string
+          descricao?: string | null
+          id?: number
+          link?: string | null
+          materia?: string | null
+          nome_atividade?: string | null
         }
         Relationships: []
       }
@@ -62,7 +95,6 @@ export type Database = {
           created_at: string | null
           id_name: string
           lista_name: string | null
-          ordem: string | null
           pontuacao: number | null
           primal: string
         }
@@ -71,7 +103,6 @@ export type Database = {
           created_at?: string | null
           id_name: string
           lista_name?: string | null
-          ordem?: string | null
           pontuacao?: number | null
           primal?: string
         }
@@ -80,7 +111,6 @@ export type Database = {
           created_at?: string | null
           id_name?: string
           lista_name?: string | null
-          ordem?: string | null
           pontuacao?: number | null
           primal?: string
         }
@@ -93,16 +123,14 @@ export type Database = {
           id: string
           image: string | null
           list_name: string | null
-          user_id: string
           word: string | null
         }
         Insert: {
           created_at?: string | null
           difficulty?: number | null
-          id: string
+          id?: string
           image?: string | null
           list_name?: string | null
-          user_id: string
           word?: string | null
         }
         Update: {
@@ -111,7 +139,6 @@ export type Database = {
           id?: string
           image?: string | null
           list_name?: string | null
-          user_id?: string
           word?: string | null
         }
         Relationships: []
