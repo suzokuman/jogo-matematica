@@ -9,6 +9,7 @@ interface GameSelectionProps {
   onStartFractions: () => void;
   onStartArithmetic: (tipo: string) => void;
   onViewLeaderboard: () => void;
+  onChangeLevel: () => void;
 }
 
 const GameSelection: React.FC<GameSelectionProps> = ({
@@ -17,6 +18,7 @@ const GameSelection: React.FC<GameSelectionProps> = ({
   onStartFractions,
   onStartArithmetic,
   onViewLeaderboard,
+  onChangeLevel,
 }) => {
   const [showArithmeticMenu, setShowArithmeticMenu] = useState(false);
 
@@ -74,13 +76,21 @@ const GameSelection: React.FC<GameSelectionProps> = ({
         </motion.div>
       )}
       
-      <Button 
-        variant="outline"
-        onClick={onViewLeaderboard}
-        className="mt-4"
-      >
-        Ver Histórico de Pontuações (Admin)
-      </Button>
+      <div className="flex gap-4 mt-4">
+        <Button 
+          variant="outline"
+          onClick={onChangeLevel}
+          className="border-game-secondary text-game-secondary hover:bg-game-secondary hover:text-white"
+        >
+          Mudar Nível
+        </Button>
+        <Button 
+          variant="outline"
+          onClick={onViewLeaderboard}
+        >
+          Ver Histórico de Pontuações (Admin)
+        </Button>
+      </div>
     </motion.div>
   );
 };

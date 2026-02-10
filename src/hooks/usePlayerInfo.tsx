@@ -15,8 +15,14 @@ export const usePlayerInfo = () => {
     localStorage.setItem("playerInfo", JSON.stringify(newPlayerInfo));
   };
 
+  const clearPlayerInfo = () => {
+    setPlayerInfo(null);
+    localStorage.removeItem("playerInfo");
+  };
+
   return {
     playerInfo,
-    savePlayerInfo
+    savePlayerInfo,
+    clearPlayerInfo
   };
 };
