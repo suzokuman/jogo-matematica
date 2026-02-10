@@ -17,7 +17,7 @@ const Index = () => {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
   
-  const { playerInfo, savePlayerInfo } = usePlayerInfo();
+  const { playerInfo, savePlayerInfo, clearPlayerInfo } = usePlayerInfo();
   const { leaderboardEntries, isLoading, loadLeaderboardData, clearLeaderboard } = useLeaderboard();
 
   useEffect(() => {
@@ -111,6 +111,7 @@ const Index = () => {
             onStartFractions={startFractions}
             onStartArithmetic={startArithmetic}
             onViewLeaderboard={handleViewLeaderboard}
+            onChangeLevel={clearPlayerInfo}
           />
         )}
       </motion.div>
