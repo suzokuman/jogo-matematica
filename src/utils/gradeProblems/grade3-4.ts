@@ -12,12 +12,9 @@ const createGradeProblem = (grade: number, operationType: string): { num1: numbe
   if (operationType === "subtracao") {
     if (num1 < num2) [num1, num2] = [num2, num1];
   } else if (operationType === "divisao") {
-    const maxDivisor = Math.floor(range.max / 2);
-    const minDivisor = Math.max(range.min, 2);
-    num2 = generateNumberInRange(minDivisor, Math.max(minDivisor, maxDivisor));
-    const maxMultiplier = Math.max(2, Math.floor(range.max / num2));
-    const multiplier = generateNumberInRange(2, maxMultiplier);
-    num1 = num2 * multiplier;
+    num2 = generateNumberInRange(range.min, range.max);
+    const resultado = generateNumberInRange(range.min, range.max);
+    num1 = num2 * resultado;
   } else if (operationType === "multiplicacao") {
     num1 = generateNumberInRange(range.min, range.max);
     num2 = generateNumberInRange(range.min, range.max);
