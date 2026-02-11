@@ -12,16 +12,18 @@ export const createGrade7Problem = (operationType: string): { num1: number, num2
   if (operationType === "subtracao") {
     if (num1 < num2) [num1, num2] = [num2, num1];
   } else if (operationType === "divisao") {
-    num2 = generateNumberInRange(range.min, range.max);
-    const resultado = generateNumberInRange(range.min, range.max);
-    num1 = num2 * resultado;
+    // Níveis 7+: permite divisões não exatas com decimais
+    num1 = generateNumberInRange(range.min, range.max);
+    num2 = generateNumberInRange(Math.max(range.min, 2), Math.min(range.max, 50));
   } else if (operationType === "multiplicacao") {
     num1 = generateNumberInRange(range.min, range.max);
     num2 = generateNumberInRange(range.min, range.max);
   }
 
-  num1 = Math.max(range.min, Math.min(range.max, num1));
-  num2 = Math.max(range.min, Math.min(range.max, num2));
+  if (operationType !== "divisao") {
+    num1 = Math.max(range.min, Math.min(range.max, num1));
+    num2 = Math.max(range.min, Math.min(range.max, num2));
+  }
 
   return { num1, num2 };
 };

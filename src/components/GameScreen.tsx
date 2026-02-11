@@ -41,80 +41,73 @@ const GameScreen: React.FC<GameScreenProps> = ({
 
   // Calculate correct answer
   const calculate = (a: number, b: number, tipo: string) => {
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo") || "{}");
+    const grade = parseInt(playerInfo.grade || "1");
+    
     switch (tipo) {
       case "soma": return a + b;
       case "subtracao": return a - b;
       case "multiplicacao": return a * b;
-      case "divisao": return Math.floor(a / b);
+      case "divisao": 
+        if (grade >= 7) {
+          // Níveis 7-9: resultado com até 2 casas decimais
+          return parseFloat((a / b).toFixed(2));
+        }
+        return a / b; // Níveis 1-6: divisão exata garantida pela geração
       default: return a + b;
     }
   };
 
   // Gerar opções adequadas por série
   const generateOptionsWithCorrect = (correctAnswer: number): number[] => {
-    const options = new Set([correctAnswer]);
+    const options = new Set<number>([correctAnswer]);
     const playerInfo = JSON.parse(localStorage.getItem("playerInfo") || "{}");
     const grade = parseInt(playerInfo.grade || "1");
+    const isDecimal = grade >= 7 && operationType === "divisao";
     
-    console.log(`Gerando opções para ${grade}º ano, resposta correta: ${correctAnswer}`);
-    
-    // Definir range de opções baseado na série
     let minOption = 1;
     let maxOption = 20;
     
     switch (grade) {
-      case 1:
-        minOption = 1;
-        maxOption = 18; // Para 1º ano, respostas até 9+9=18
-        break;
-      case 2:
-        minOption = 1;
-        maxOption = 40;
-        break;
-      case 3:
-      case 4:
-        minOption = 1;
-        maxOption = 100;
-        break;
-      case 5:
-      case 6:
-        minOption = 1;
-        maxOption = 200;
-        break;
-      default:
-        minOption = 1;
-        maxOption = Math.max(correctAnswer * 2, 100);
+      case 1: maxOption = 18; break;
+      case 2: maxOption = 40; break;
+      case 3: case 4: maxOption = 100; break;
+      case 5: case 6: maxOption = 200; break;
+      default: maxOption = Math.max(correctAnswer * 2, 100);
     }
     
-    // Gerar opções variadas mas dentro do range apropriado
     while (options.size < 6) {
       let option: number;
-      
       const strategy = Math.floor(Math.random() * 3);
       
       switch (strategy) {
-        case 0: // Números próximos à resposta correta
-          const offset = Math.floor(Math.random() * Math.min(10, maxOption / 4)) + 1;
-          option = correctAnswer + (Math.random() < 0.5 ? offset : -offset);
+        case 0:
+          const offset = isDecimal 
+            ? parseFloat((Math.random() * 5 + 0.5).toFixed(2))
+            : Math.floor(Math.random() * Math.min(10, maxOption / 4)) + 1;
+          option = isDecimal
+            ? parseFloat((correctAnswer + (Math.random() < 0.5 ? offset : -offset)).toFixed(2))
+            : correctAnswer + (Math.random() < 0.5 ? offset : -offset);
           break;
-        case 1: // Números aleatórios no range
-          option = Math.floor(Math.random() * (maxOption - minOption + 1)) + minOption;
+        case 1:
+          option = isDecimal
+            ? parseFloat((Math.random() * maxOption + minOption).toFixed(2))
+            : Math.floor(Math.random() * (maxOption - minOption + 1)) + minOption;
           break;
-        default: // Variações da resposta correta
+        default:
           const factor = Math.random() < 0.5 ? 0.7 : 1.3;
-          option = Math.floor(correctAnswer * factor);
+          option = isDecimal
+            ? parseFloat((correctAnswer * factor).toFixed(2))
+            : Math.floor(correctAnswer * factor);
           break;
       }
       
-      // Garantir que a opção esteja no range correto e seja diferente da resposta
       if (option >= minOption && option <= maxOption && option !== correctAnswer && option > 0) {
         options.add(option);
       }
     }
     
-    const finalOptions = Array.from(options).sort(() => Math.random() - 0.5);
-    console.log(`Opções finais para ${grade}º ano: ${finalOptions.join(', ')}`);
-    return finalOptions;
+    return Array.from(options).sort(() => Math.random() - 0.5);
   };
 
   const handleDrop = (value: number) => {
