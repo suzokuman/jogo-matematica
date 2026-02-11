@@ -13,8 +13,10 @@ export const createGrade8Problem = (operationType: string): { num1: number, num2
     if (num1 < num2) [num1, num2] = [num2, num1];
   } else if (operationType === "divisao") {
     const divRange = getDivisionRangeByGrade();
-    num1 = generateNumberInRange(2, divRange.max);
-    num2 = generateNumberInRange(2, Math.min(99, divRange.max));
+    do {
+      num1 = generateNumberInRange(2, divRange.max);
+      num2 = generateNumberInRange(2, Math.min(99, divRange.max));
+    } while (num1 === num2);
   } else if (operationType === "multiplicacao") {
     num1 = generateNumberInRange(range.min, range.max);
     num2 = generateNumberInRange(range.min, range.max);
@@ -41,8 +43,10 @@ export const createGrade9Problem = (operationType: string): { num1: number, num2
     if (num1 < num2) [num1, num2] = [num2, num1];
   } else if (operationType === "divisao") {
     const divRange = getDivisionRangeByGrade();
-    num1 = generateNumberInRange(2, divRange.max);
-    num2 = generateNumberInRange(2, Math.min(99, divRange.max));
+    do {
+      num1 = generateNumberInRange(2, divRange.max);
+      num2 = generateNumberInRange(2, Math.min(99, divRange.max));
+    } while (num1 === num2);
   } else if (operationType === "multiplicacao") {
     num1 = generateNumberInRange(range.min, range.max);
     num2 = generateNumberInRange(range.min, range.max);

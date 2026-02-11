@@ -16,7 +16,7 @@ export const createGrade1Problem = (operationType: string): { num1: number, num2
     // Divisão exata: escolher divisor e resultado, num1 = divisor * resultado
     num2 = generateNumberInRange(2, divRange.max);
     const maxResultado = Math.floor(divRange.max / num2);
-    const resultado = generateNumberInRange(1, Math.max(1, maxResultado));
+    const resultado = generateNumberInRange(2, Math.max(2, maxResultado));
     num1 = num2 * resultado;
   } else if (operationType === "multiplicacao") {
     num1 = generateNumberInRange(range.min, range.max);

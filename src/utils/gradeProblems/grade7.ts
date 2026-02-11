@@ -14,8 +14,10 @@ export const createGrade7Problem = (operationType: string): { num1: number, num2
   } else if (operationType === "divisao") {
     const divRange = getDivisionRangeByGrade();
     // Níveis 7+: mistura de divisões exatas e não exatas
-    num1 = generateNumberInRange(2, divRange.max);
-    num2 = generateNumberInRange(2, Math.min(50, divRange.max));
+    do {
+      num1 = generateNumberInRange(2, divRange.max);
+      num2 = generateNumberInRange(2, Math.min(50, divRange.max));
+    } while (num1 === num2);
   } else if (operationType === "multiplicacao") {
     num1 = generateNumberInRange(range.min, range.max);
     num2 = generateNumberInRange(range.min, range.max);
