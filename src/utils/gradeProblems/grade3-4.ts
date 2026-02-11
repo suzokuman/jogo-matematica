@@ -20,8 +20,10 @@ const createGradeProblem = (grade: number, operationType: string): { num1: numbe
     num2 = generateNumberInRange(range.min, range.max);
   }
 
-  num1 = Math.max(range.min, Math.min(range.max, num1));
-  num2 = Math.max(range.min, Math.min(range.max, num2));
+  if (operationType !== "divisao") {
+    num1 = Math.max(range.min, Math.min(range.max, num1));
+    num2 = Math.max(range.min, Math.min(range.max, num2));
+  }
 
   return { num1, num2 };
 };
