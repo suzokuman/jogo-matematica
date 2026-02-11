@@ -1,9 +1,9 @@
-import { getNumberRangeByGrade, generateNumberInRange, getMultDivRangeByGrade } from "../gradeRanges";
+import { getNumberRangeByGrade, generateNumberInRange, getMultDivRangeByGrade, getDivisionRangeByGrade } from "../gradeRanges";
 
-// 8º ANO: Números de 100 a 999 - divisão com decimais permitida
+// 8º ANO: Divisão pode ser não exata (decimais permitidos)
 export const createGrade8Problem = (operationType: string): { num1: number, num2: number } => {
   let range = getNumberRangeByGrade();
-  if (operationType === "multiplicacao" || operationType === "divisao") {
+  if (operationType === "multiplicacao") {
     range = getMultDivRangeByGrade();
   }
   let num1 = generateNumberInRange(range.min, range.max);
@@ -12,8 +12,9 @@ export const createGrade8Problem = (operationType: string): { num1: number, num2
   if (operationType === "subtracao") {
     if (num1 < num2) [num1, num2] = [num2, num1];
   } else if (operationType === "divisao") {
-    num1 = generateNumberInRange(range.min, range.max);
-    num2 = generateNumberInRange(Math.max(range.min, 2), Math.min(range.max, 99));
+    const divRange = getDivisionRangeByGrade();
+    num1 = generateNumberInRange(2, divRange.max);
+    num2 = generateNumberInRange(2, Math.min(99, divRange.max));
   } else if (operationType === "multiplicacao") {
     num1 = generateNumberInRange(range.min, range.max);
     num2 = generateNumberInRange(range.min, range.max);
@@ -27,10 +28,10 @@ export const createGrade8Problem = (operationType: string): { num1: number, num2
   return { num1, num2 };
 };
 
-// 9º ANO: Números de 100 a 9999 - divisão com decimais permitida
+// 9º ANO: Divisão pode ser não exata (decimais permitidos)
 export const createGrade9Problem = (operationType: string): { num1: number, num2: number } => {
   let range = getNumberRangeByGrade();
-  if (operationType === "multiplicacao" || operationType === "divisao") {
+  if (operationType === "multiplicacao") {
     range = getMultDivRangeByGrade();
   }
   let num1 = generateNumberInRange(range.min, range.max);
@@ -39,8 +40,9 @@ export const createGrade9Problem = (operationType: string): { num1: number, num2
   if (operationType === "subtracao") {
     if (num1 < num2) [num1, num2] = [num2, num1];
   } else if (operationType === "divisao") {
-    num1 = generateNumberInRange(range.min, range.max);
-    num2 = generateNumberInRange(Math.max(range.min, 2), Math.min(range.max, 99));
+    const divRange = getDivisionRangeByGrade();
+    num1 = generateNumberInRange(2, divRange.max);
+    num2 = generateNumberInRange(2, Math.min(99, divRange.max));
   } else if (operationType === "multiplicacao") {
     num1 = generateNumberInRange(range.min, range.max);
     num2 = generateNumberInRange(range.min, range.max);
