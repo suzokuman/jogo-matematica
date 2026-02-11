@@ -1,9 +1,9 @@
-import { getNumberRangeByGrade, generateNumberInRange, getMultDivRangeByGrade } from "../gradeRanges";
+import { getNumberRangeByGrade, generateNumberInRange, getMultDivRangeByGrade, getDivisionRangeByGrade } from "../gradeRanges";
 
-// 5º e 6º ANO: Números de 1 a 99
+// 5º e 6º ANO: Divisão exata
 const createGradeProblem = (grade: number, operationType: string): { num1: number, num2: number } => {
   let range = getNumberRangeByGrade();
-  if (operationType === "multiplicacao" || operationType === "divisao") {
+  if (operationType === "multiplicacao") {
     range = getMultDivRangeByGrade();
   }
   let num1 = generateNumberInRange(range.min, range.max);
@@ -12,8 +12,10 @@ const createGradeProblem = (grade: number, operationType: string): { num1: numbe
   if (operationType === "subtracao") {
     if (num1 < num2) [num1, num2] = [num2, num1];
   } else if (operationType === "divisao") {
-    num2 = generateNumberInRange(range.min, range.max);
-    const resultado = generateNumberInRange(range.min, range.max);
+    const divRange = getDivisionRangeByGrade();
+    num2 = generateNumberInRange(2, divRange.max);
+    const maxResultado = Math.floor(divRange.max / num2);
+    const resultado = generateNumberInRange(1, Math.max(1, maxResultado));
     num1 = num2 * resultado;
   } else if (operationType === "multiplicacao") {
     num1 = generateNumberInRange(range.min, range.max);
