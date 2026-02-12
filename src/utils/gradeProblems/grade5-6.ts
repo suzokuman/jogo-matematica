@@ -13,10 +13,19 @@ const createGradeProblem = (grade: number, operationType: string): { num1: numbe
     if (num1 < num2) [num1, num2] = [num2, num1];
   } else if (operationType === "divisao") {
     const divRange = getDivisionRangeByGrade();
-    num2 = generateNumberInRange(2, divRange.max);
-    const maxResultado = Math.floor(divRange.max / num2);
-    const resultado = generateNumberInRange(2, Math.max(2, maxResultado));
-    num1 = num2 * resultado;
+    if (grade <= 5) {
+      // Nível 5: divisão exata (resto = 0)
+      num2 = generateNumberInRange(2, Math.min(20, divRange.max));
+      const maxResultado = Math.max(2, Math.floor(divRange.max / num2));
+      const resultado = generateNumberInRange(2, maxResultado);
+      num1 = num2 * resultado;
+    } else {
+      // Nível 6: pode ter até 2 casas decimais
+      do {
+        num1 = generateNumberInRange(2, divRange.max);
+        num2 = generateNumberInRange(2, Math.min(30, divRange.max));
+      } while (num1 === num2);
+    }
   } else if (operationType === "multiplicacao") {
     num1 = generateNumberInRange(range.min, range.max);
     num2 = generateNumberInRange(range.min, range.max);

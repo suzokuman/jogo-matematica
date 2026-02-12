@@ -13,9 +13,9 @@ const createGradeProblem = (grade: number, operationType: string): { num1: numbe
     if (num1 < num2) [num1, num2] = [num2, num1];
   } else if (operationType === "divisao") {
     const divRange = getDivisionRangeByGrade();
-    num2 = generateNumberInRange(2, divRange.max);
-    const maxResultado = Math.floor(divRange.max / num2);
-    const resultado = generateNumberInRange(2, Math.max(2, maxResultado));
+    num2 = generateNumberInRange(2, Math.min(15, divRange.max));
+    const maxResultado = Math.max(2, Math.floor(divRange.max / num2));
+    const resultado = generateNumberInRange(2, maxResultado);
     num1 = num2 * resultado;
   } else if (operationType === "multiplicacao") {
     num1 = generateNumberInRange(range.min, range.max);
