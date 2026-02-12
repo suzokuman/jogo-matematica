@@ -49,11 +49,11 @@ const GameScreen: React.FC<GameScreenProps> = ({
       case "subtracao": return a - b;
       case "multiplicacao": return a * b;
       case "divisao": 
-        if (grade >= 7) {
-          // Níveis 7-9: resultado com até 2 casas decimais
+        if (grade >= 6) {
+          // Níveis 6-9: resultado com até 2 casas decimais
           return parseFloat((a / b).toFixed(2));
         }
-        return a / b; // Níveis 1-6: divisão exata garantida pela geração
+        return a / b; // Níveis 1-5: divisão exata garantida pela geração
       default: return a + b;
     }
   };
@@ -63,7 +63,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
     const options = new Set<number>([correctAnswer]);
     const playerInfo = JSON.parse(localStorage.getItem("playerInfo") || "{}");
     const grade = parseInt(playerInfo.grade || "1");
-    const isDecimal = grade >= 7 && operationType === "divisao";
+    const isDecimal = grade >= 6 && operationType === "divisao";
     
     let minOption = 1;
     let maxOption = 20;
