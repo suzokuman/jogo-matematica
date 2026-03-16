@@ -1,4 +1,5 @@
 import { getNumberRangeByGrade, generateNumberInRange, getMultDivRangeByGrade, getDivisionRangeByGrade } from "../gradeRanges";
+import { generateDivisionOperands } from "./divisionUtils";
 
 // 2º ANO: Divisão com números de 1 a 20, resultado exato
 export const createGrade2Problem = (operationType: string): { num1: number, num2: number } => {

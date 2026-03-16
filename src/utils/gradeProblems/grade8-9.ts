@@ -1,4 +1,5 @@
 import { getNumberRangeByGrade, generateNumberInRange, getMultDivRangeByGrade, getDivisionRangeByGrade } from "../gradeRanges";
+import { generateDivisionOperands } from "./divisionUtils";
 
 // 8º ANO: Divisão pode ser não exata (decimais permitidos)
 export const createGrade8Problem = (operationType: string): { num1: number, num2: number } => {
