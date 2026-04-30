@@ -54,12 +54,18 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				game: {
-					primary: '#7E69AB',
-					secondary: '#9b87f5',
-					light: '#E5DEFF',
-					wrong: '#ff6b6b',
-					correct: '#4BB543',
-					background: '#f8f9ff',
+					primary: 'hsl(315 100% 69%)',
+					secondary: 'hsl(234 80% 60%)',
+					light: 'hsl(49 100% 62%)',
+					wrong: 'hsl(0 90% 65%)',
+					correct: 'hsl(140 80% 55%)',
+					background: 'hsl(240 60% 16%)',
+				},
+				cosmic: {
+					deep: 'hsl(240 70% 12%)',
+					nebula: 'hsl(315 100% 69%)',
+					star: 'hsl(49 100% 62%)',
+					aurora: 'hsl(180 80% 55%)',
 				}
 			},
 			borderRadius: {
