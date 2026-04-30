@@ -53,7 +53,7 @@ const Index = () => {
 
   if (selectedGame === "arithmetic") {
     return (
-      <div className="bg-gradient-to-b from-game-light to-game-background min-h-screen">
+      <div className="bg-transparent min-h-screen">
         <ArithmeticGame initialOperationType={operationType} onReturnHome={returnToHome} />
       </div>
     );
@@ -61,7 +61,7 @@ const Index = () => {
 
   if (selectedGame === "fractions") {
     return (
-      <div className="bg-gradient-to-b from-game-light to-game-background min-h-screen">
+      <div className="bg-transparent min-h-screen">
         <FractionsGame onReturnHome={returnToHome} />
       </div>
     );
