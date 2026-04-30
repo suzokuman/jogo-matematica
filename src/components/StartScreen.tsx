@@ -69,10 +69,10 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart, operationType, onRet
         </Button>
         
         {onReturnHome && (
-          <Button 
+          <Button
             variant="outline"
             onClick={onReturnHome}
-            className="border-game-primary text-game-primary hover:bg-game-primary hover:text-white"
+            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
           >
             Voltar para Início
           </Button>
