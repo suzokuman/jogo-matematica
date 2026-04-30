@@ -83,41 +83,43 @@ const EndScreen: React.FC<EndScreenProps> = ({ score, onRestart, onViewLeaderboa
     >
       <Confetti />
       
-      <h1 className="text-3xl md:text-5xl font-bold text-game-primary mb-6 text-center">
-        Parabéns!
+      <div className="text-7xl mb-4 float-anim">🏆</div>
+      <h1 className="text-3xl md:text-5xl font-bold neon-text-pink mb-6 text-center">
+        Parabéns, Astronauta!
       </h1>
-      
-      <div className="bg-white p-8 rounded-xl shadow-lg max-w-lg mb-8 w-full text-center">
+
+      <div className="cosmic-card max-w-lg mb-8 w-full text-center">
         <p className="text-xl mb-4">
           Você completou todos os 20 níveis do Jogo de {gameType === "frações" ? "Frações" : "Aritmética"}.
         </p>
         <p className="text-2xl font-bold mb-6">
-          Sua pontuação final foi: 
-          <span className={`block text-3xl mt-3 ${score > 10 ? "text-game-correct" : "text-game-wrong"}`}>
-            {score} pontos
+          Sua pontuação final foi:
+          <span className={`block text-4xl mt-3 ${score > 10 ? "text-game-correct" : "text-game-wrong"}`}>
+            {score} pontos ⭐
           </span>
         </p>
-        
+
         <div className="flex flex-col md:flex-row gap-4 justify-center">
-          <Button 
+          <Button
             className="game-button"
             onClick={onRestart}
             disabled={isSaving}
           >
             Jogar Novamente
           </Button>
-          
-          <Button 
-            className="bg-game-secondary hover:bg-game-secondary/80" 
+
+          <Button
+            variant="outline"
+            className="border-accent text-accent hover:bg-accent hover:text-accent-foreground"
             onClick={onViewLeaderboard}
             disabled={isSaving}
           >
             Ver Histórico
           </Button>
         </div>
-        
+
         {isSaving && (
-          <p className="mt-4 text-sm text-gray-500">Salvando pontuação...</p>
+          <p className="mt-4 text-sm text-muted-foreground">Salvando pontuação...</p>
         )}
       </div>
     </motion.div>
