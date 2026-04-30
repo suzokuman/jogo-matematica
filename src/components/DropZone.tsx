@@ -22,7 +22,7 @@ const DropZone: React.FC<DropZoneProps> = ({ onDrop, message, status }) => {
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsOver(false);
-    const value = parseInt(e.dataTransfer.getData("text/plain"));
+    const value = parseFloat(e.dataTransfer.getData("text/plain"));
     onDrop(value);
   };
 
