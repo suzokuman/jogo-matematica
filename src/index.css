@@ -1,39 +1,50 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Tema Espacial/Aventura - fundo escuro estrelado com neon */
+    --background: 240 60% 16%;
+    --foreground: 50 100% 96%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 240 55% 22%;
+    --card-foreground: 50 100% 96%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 240 55% 22%;
+    --popover-foreground: 50 100% 96%;
 
-    --primary: 252 86% 73%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 315 100% 69%;
+    --primary-foreground: 240 60% 10%;
 
-    --secondary: 260 40% 54%;
+    --secondary: 234 51% 47%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 240 40% 28%;
+    --muted-foreground: 240 20% 80%;
 
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --accent: 49 100% 62%;
+    --accent-foreground: 240 60% 10%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 90% 65%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 240 40% 35%;
+    --input: 240 40% 30%;
+    --ring: 315 100% 69%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
+
+    /* Gradientes espaciais */
+    --gradient-cosmic: linear-gradient(135deg, hsl(240 70% 12%) 0%, hsl(234 60% 25%) 50%, hsl(280 60% 30%) 100%);
+    --gradient-nebula: linear-gradient(135deg, hsl(315 100% 69%) 0%, hsl(280 80% 60%) 100%);
+    --gradient-star: linear-gradient(135deg, hsl(49 100% 62%) 0%, hsl(35 100% 60%) 100%);
+    --gradient-aurora: linear-gradient(135deg, hsl(234 80% 50%) 0%, hsl(180 80% 55%) 100%);
+
+    /* Shadows neon */
+    --shadow-neon-pink: 0 0 20px hsl(315 100% 69% / 0.5), 0 0 40px hsl(315 100% 69% / 0.3);
+    --shadow-neon-yellow: 0 0 20px hsl(49 100% 62% / 0.5), 0 0 40px hsl(49 100% 62% / 0.3);
+    --shadow-neon-blue: 0 0 20px hsl(234 80% 60% / 0.5);
   }
 
   * {
@@ -41,33 +52,141 @@
   }
 
   body {
-    @apply bg-game-background text-foreground font-sans min-h-screen;
-    font-family: 'Nunito', sans-serif;
+    @apply bg-background text-foreground min-h-screen;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: var(--gradient-cosmic);
+    background-attachment: fixed;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: -0.01em;
+  }
+
+  /* Estrelas animadas no fundo */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(2px 2px at 20% 30%, hsl(50 100% 90%), transparent),
+      radial-gradient(1px 1px at 60% 70%, hsl(50 100% 90%), transparent),
+      radial-gradient(1.5px 1.5px at 80% 10%, hsl(315 100% 80%), transparent),
+      radial-gradient(1px 1px at 30% 80%, hsl(50 100% 90%), transparent),
+      radial-gradient(2px 2px at 90% 50%, hsl(180 100% 80%), transparent),
+      radial-gradient(1px 1px at 10% 60%, hsl(50 100% 90%), transparent),
+      radial-gradient(1.5px 1.5px at 50% 20%, hsl(49 100% 70%), transparent),
+      radial-gradient(1px 1px at 75% 85%, hsl(50 100% 90%), transparent);
+    background-size: 100% 100%;
+    pointer-events: none;
+    z-index: 0;
+    animation: twinkle 4s ease-in-out infinite;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 15% 15%, hsl(50 100% 90%), transparent),
+      radial-gradient(1px 1px at 45% 55%, hsl(50 100% 90%), transparent),
+      radial-gradient(1.5px 1.5px at 70% 35%, hsl(315 100% 80%), transparent),
+      radial-gradient(1px 1px at 25% 75%, hsl(50 100% 90%), transparent),
+      radial-gradient(1px 1px at 85% 25%, hsl(180 100% 80%), transparent);
+    pointer-events: none;
+    z-index: 0;
+    animation: twinkle 6s ease-in-out infinite reverse;
+  }
+
+  #root {
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: var(--shadow-neon-pink); }
+    50% { box-shadow: 0 0 30px hsl(315 100% 69% / 0.8), 0 0 60px hsl(315 100% 69% / 0.4); }
   }
 }
 
 @layer components {
   .game-option {
-    @apply px-6 py-3 bg-gradient-to-br from-game-secondary to-game-primary text-white font-bold rounded-xl cursor-grab 
-    transform transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 select-none;
+    @apply px-6 py-4 text-white font-bold rounded-2xl cursor-grab
+    transform transition-all duration-200 select-none border-2;
+    background: var(--gradient-nebula);
+    border-color: hsl(315 100% 80% / 0.5);
+    box-shadow: var(--shadow-neon-pink);
   }
-  
+  .game-option:hover {
+    @apply scale-110;
+    box-shadow: 0 0 30px hsl(315 100% 69% / 0.8), 0 0 60px hsl(315 100% 69% / 0.4);
+  }
+
   .drop-zone {
-    @apply border-4 border-dashed border-game-primary/40 bg-game-light/50 rounded-2xl p-6 min-h-[100px]
+    @apply border-4 border-dashed rounded-2xl p-6 min-h-[110px]
     flex items-center justify-center font-bold text-xl transition-all duration-300;
+    border-color: hsl(49 100% 62% / 0.6);
+    background: hsl(240 50% 25% / 0.5);
+    color: hsl(50 100% 95%);
+    backdrop-filter: blur(10px);
   }
-  
+
   .game-button {
-    @apply px-8 py-4 bg-gradient-to-r from-game-primary to-game-secondary text-white font-bold rounded-full
-    transform transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-1 active:translate-y-0 
-    focus:outline-none focus:ring-2 focus:ring-game-primary focus:ring-offset-2;
+    @apply px-8 py-4 text-white font-bold rounded-full
+    transform transition-all duration-200 hover:-translate-y-1 active:translate-y-0
+    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background;
+    background: var(--gradient-nebula);
+    box-shadow: var(--shadow-neon-pink);
   }
-  
+  .game-button:hover {
+    box-shadow: 0 0 30px hsl(315 100% 69% / 0.9), 0 0 60px hsl(315 100% 69% / 0.5);
+  }
+
+  .cosmic-card {
+    @apply rounded-3xl p-8 border-2;
+    background: hsl(240 55% 22% / 0.85);
+    border-color: hsl(315 100% 69% / 0.3);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px hsl(240 80% 5% / 0.5), inset 0 1px 0 hsl(50 100% 90% / 0.1);
+  }
+
+  .neon-text {
+    color: hsl(49 100% 62%);
+    text-shadow: 0 0 10px hsl(49 100% 62% / 0.6), 0 0 20px hsl(49 100% 62% / 0.4);
+  }
+
+  .neon-text-pink {
+    color: hsl(315 100% 75%);
+    text-shadow: 0 0 10px hsl(315 100% 69% / 0.6), 0 0 20px hsl(315 100% 69% / 0.4);
+  }
+
   .correct {
-    @apply border-game-correct bg-game-correct/20 border-solid;
+    border-color: hsl(140 80% 55%) !important;
+    background: hsl(140 80% 30% / 0.4) !important;
+    color: hsl(140 100% 90%) !important;
+    box-shadow: 0 0 30px hsl(140 80% 55% / 0.6);
   }
-  
+
   .wrong {
-    @apply border-game-wrong bg-game-wrong/20 border-solid;
+    border-color: hsl(0 90% 65%) !important;
+    background: hsl(0 80% 30% / 0.4) !important;
+    color: hsl(0 100% 92%) !important;
+    box-shadow: 0 0 30px hsl(0 90% 65% / 0.6);
+  }
+
+  .float-anim {
+    animation: float 4s ease-in-out infinite;
   }
 }

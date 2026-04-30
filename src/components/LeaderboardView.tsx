@@ -17,7 +17,7 @@ const LeaderboardView: React.FC<LeaderboardViewProps> = ({
   onClearLeaderboard
 }) => {
   return (
-    <div className="bg-gradient-to-b from-game-light to-game-background min-h-screen py-10">
+    <div className="bg-transparent min-h-screen py-10">
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="bg-white p-6 rounded-2xl shadow-lg">
           <div className="flex justify-between items-center mb-6">

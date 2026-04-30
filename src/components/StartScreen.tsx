@@ -22,19 +22,20 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart, operationType, onRet
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
     >
-      <h1 className="text-3xl md:text-5xl font-bold text-game-primary mb-6 text-center">
-        {isFractions 
-          ? "Bem-vindo ao Jogo das Frações!" 
-          : `Bem-vindo ao Jogo de Aritmética!`}
+      <div className="text-6xl mb-4 float-anim">{isFractions ? "🍕" : "🪐"}</div>
+      <h1 className="text-3xl md:text-5xl font-bold neon-text-pink mb-6 text-center">
+        {isFractions
+          ? "Jogo das Frações"
+          : `Jogo de Aritmética`}
       </h1>
-      
+
       {!isFractions && (
-        <p className="text-lg md:text-xl mb-4 max-w-xl text-center">
-          Modo: <span className="font-bold">{capitalize(operationType)}</span>
+        <p className="text-lg md:text-xl mb-4 max-w-xl text-center text-foreground">
+          Modo: <span className="font-bold neon-text">{capitalize(operationType)}</span>
         </p>
       )}
-      
-      <div className="bg-white p-6 rounded-xl shadow-lg max-w-xl mb-8">
+
+      <div className="cosmic-card max-w-xl mb-8">
         {isFractions ? (
           <>
             <p className="text-lg mb-4">
@@ -47,10 +48,10 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart, operationType, onRet
         ) : (
           <>
             <p className="text-lg mb-4">
-              Você verá contas de matemática. Arraste a resposta correta para o quadro.
+              ⭐ Resolva contas espaciais! Às vezes você descobre o resultado, outras vezes precisa achar o número que está faltando (ex: <span className="neon-text font-bold">12 + ? = 24</span>).
             </p>
             <p className="text-lg mb-4">
-              São 20 níveis com dificuldade crescente.
+              Arraste a resposta correta para o quadro. São 20 níveis com dificuldade crescente.
             </p>
           </>
         )}
@@ -68,10 +69,10 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart, operationType, onRet
         </Button>
         
         {onReturnHome && (
-          <Button 
+          <Button
             variant="outline"
             onClick={onReturnHome}
-            className="border-game-primary text-game-primary hover:bg-game-primary hover:text-white"
+            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
           >
             Voltar para Início
           </Button>

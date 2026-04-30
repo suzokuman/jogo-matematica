@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 
 interface DraggableOptionProps {
@@ -15,15 +14,16 @@ const DraggableOption: React.FC<DraggableOptionProps> = ({ value, onDragStart })
     setIsDragging(true);
   };
 
+  const display = Number.isInteger(value) ? value.toString() : value.toFixed(2).replace(/\.?0+$/, '');
+
   return (
     <div
-      className={`game-option text-2xl md:text-3xl ${isDragging ? "opacity-50" : "opacity-100"} 
-        animate-fade-in hover:scale-110`}
+      className={`game-option text-2xl md:text-3xl ${isDragging ? "opacity-50" : "opacity-100"} animate-fade-in`}
       draggable={true}
       onDragStart={handleDragStart}
       onDragEnd={() => setIsDragging(false)}
     >
-      {value}
+      {display}
     </div>
   );
 };
