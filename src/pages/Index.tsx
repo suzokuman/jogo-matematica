@@ -21,7 +21,7 @@ const Index = () => {
   const { leaderboardEntries, isLoading, loadLeaderboardData, clearLeaderboard } = useLeaderboard();
 
   useEffect(() => {
-    document.title = "Jogo Educativo de Matemática";
+    document.title = "Pense Matemática";
   }, []);
 
   const startFractions = () => {
@@ -92,11 +92,18 @@ const Index = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          <div className="text-6xl md:text-7xl mb-3 float-anim">🚀</div>
-          <h1 className="text-3xl md:text-5xl font-bold neon-text-pink">
-            Aventura Matemática Espacial
+          <div className="flex justify-center gap-3 text-5xl md:text-6xl mb-3">
+            <span className="float-anim" style={{ animationDelay: "0s" }}>🧠</span>
+            <span className="float-anim" style={{ animationDelay: "0.5s" }}>✨</span>
+            <span className="float-anim" style={{ animationDelay: "1s" }}>🚀</span>
+            <span className="float-anim" style={{ animationDelay: "1.5s" }}>🌟</span>
+          </div>
+          <h1 className="text-4xl md:text-6xl font-bold rainbow-text">
+            Pense Matemática
           </h1>
-          <p className="text-muted-foreground mt-2">Explore o universo dos números!</p>
+          <p className="text-muted-foreground mt-3 text-lg">
+            <span className="wiggle-anim">🎉</span> Aprenda brincando no universo dos números! <span className="wiggle-anim">🎈</span>
+          </p>
         </motion.div>
         
         {!playerInfo ? (
