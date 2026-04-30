@@ -83,9 +83,13 @@ const EndScreen: React.FC<EndScreenProps> = ({ score, onRestart, onViewLeaderboa
     >
       <Confetti />
       
-      <div className="text-7xl mb-4 float-anim">🏆</div>
-      <h1 className="text-3xl md:text-5xl font-bold neon-text-pink mb-6 text-center">
-        Parabéns, Astronauta!
+      <div className="flex gap-3 text-6xl md:text-7xl mb-4">
+        <span className="float-anim" style={{ animationDelay: "0s" }}>🏆</span>
+        <span className="float-anim" style={{ animationDelay: "0.3s" }}>🎉</span>
+        <span className="float-anim" style={{ animationDelay: "0.6s" }}>🌟</span>
+      </div>
+      <h1 className="text-3xl md:text-5xl font-bold rainbow-text mb-6 text-center">
+        Parabéns, Astronauta! 🚀
       </h1>
 
       <div className="cosmic-card max-w-lg mb-8 w-full text-center">

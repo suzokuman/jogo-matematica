@@ -22,11 +22,13 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart, operationType, onRet
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
     >
-      <div className="text-6xl mb-4 float-anim">{isFractions ? "🍕" : "🪐"}</div>
-      <h1 className="text-3xl md:text-5xl font-bold neon-text-pink mb-6 text-center">
-        {isFractions
-          ? "Jogo das Frações"
-          : `Jogo de Aritmética`}
+      <div className="flex gap-4 text-6xl mb-4">
+        <span className="float-anim" style={{ animationDelay: "0s" }}>{isFractions ? "🍕" : "🚀"}</span>
+        <span className="float-anim" style={{ animationDelay: "0.4s" }}>{isFractions ? "🎂" : "⭐"}</span>
+        <span className="float-anim" style={{ animationDelay: "0.8s" }}>{isFractions ? "🥧" : "🪐"}</span>
+      </div>
+      <h1 className="text-3xl md:text-5xl font-bold rainbow-text mb-6 text-center">
+        {isFractions ? "Jogo das Frações" : "Jogo de Aritmética"}
       </h1>
 
       {!isFractions && (

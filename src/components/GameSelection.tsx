@@ -34,23 +34,23 @@ const GameSelection: React.FC<GameSelectionProps> = ({
       transition={{ delay: 0.4 }}
     >
       <p className="text-xl mb-2">
-        Olá, <span className="font-bold">{playerName}</span> — <span className="font-bold">Nível {playerGrade}</span>!
+        Olá, <span className="font-bold neon-text-pink">{playerName}</span> — <span className="font-bold neon-text">Nível {playerGrade}</span>! 👋
       </p>
-      <p className="text-lg mb-4">Escolha um jogo para começar:</p>
+      <p className="text-lg mb-4">🎮 Escolha um jogo para começar:</p>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Button 
           className="game-button py-6 text-xl"
           onClick={onStartFractions}
         >
-          Frações
+          🍕 Frações
         </Button>
         
         <Button 
           className="game-button py-6 text-xl"
           onClick={toggleArithmeticMenu}
         >
-          Aritmética Básica
+          ➕ Aritmética Básica
         </Button>
       </div>
       
@@ -61,16 +61,18 @@ const GameSelection: React.FC<GameSelectionProps> = ({
           animate={{ opacity: 1, height: "auto" }}
           transition={{ duration: 0.3 }}
         >
-          {["soma", "subtracao", "multiplicacao", "divisao"].map((tipo) => (
+          {[
+            { tipo: "soma", emoji: "➕", label: "Soma" },
+            { tipo: "subtracao", emoji: "➖", label: "Subtração" },
+            { tipo: "multiplicacao", emoji: "✖️", label: "Multiplicação" },
+            { tipo: "divisao", emoji: "➗", label: "Divisão" },
+          ].map(({ tipo, emoji, label }) => (
             <Button 
               key={tipo}
-              className="bg-game-secondary hover:bg-game-primary text-white py-4"
+              className="game-button py-4"
               onClick={() => onStartArithmetic(tipo)}
             >
-              {tipo === "soma" && "Soma"}
-              {tipo === "subtracao" && "Subtração"}
-              {tipo === "multiplicacao" && "Multiplicação"}
-              {tipo === "divisao" && "Divisão"}
+              {emoji} {label}
             </Button>
           ))}
         </motion.div>
