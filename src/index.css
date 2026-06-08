@@ -151,6 +151,16 @@
     border-color: hsl(48 100% 70%);
     box-shadow: var(--shadow-neon-pink), inset 0 -4px 0 hsl(280 80% 40% / 0.5);
     text-shadow: 0 2px 4px hsl(280 80% 20% / 0.6);
+    appearance: none;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+    min-width: 7rem;
+    min-height: 5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
   .game-option:hover {
     @apply scale-110 -rotate-2;
