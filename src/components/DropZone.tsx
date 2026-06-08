@@ -23,6 +23,7 @@ const DropZone: React.FC<DropZoneProps> = ({ onDrop, message, status }) => {
     e.preventDefault();
     setIsOver(false);
     const value = parseFloat(e.dataTransfer.getData("text/plain"));
+    if (Number.isNaN(value)) return;
     onDrop(value);
   };
 

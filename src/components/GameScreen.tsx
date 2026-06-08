@@ -33,7 +33,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
   const [missing, setMissing] = useState<MissingPosition>("result");
   const [options, setOptions] = useState<number[]>([]);
   const [dropStatus, setDropStatus] = useState<"idle" | "correct" | "wrong">("idle");
-  const [dropMessage, setDropMessage] = useState("Solte aqui a resposta correta");
+  const [dropMessage, setDropMessage] = useState("Arraste ou toque na resposta correta");
 
   const { playCorrect, playWrong } = useSoundEffects();
 
@@ -128,7 +128,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
       setTimeout(() => {
         onNextLevel();
         setDropStatus("idle");
-        setDropMessage("Solte aqui a resposta correta");
+        setDropMessage("Arraste ou toque na resposta correta");
       }, 1200);
     } else {
       setDropStatus("wrong");
@@ -224,7 +224,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {options.map((option, index) => (
-          <DraggableOption key={`${option}-${index}`} value={option} onDragStart={() => {}} />
+          <DraggableOption key={`${option}-${index}`} value={option} onDragStart={() => {}} onSelect={handleDrop} />
         ))}
       </div>
     </motion.div>
