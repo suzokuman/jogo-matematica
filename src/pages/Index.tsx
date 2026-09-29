@@ -1,60 +1,41 @@
-
 import { useEffect, useState } from "react";
 import ArithmeticGame from "../components/ArithmeticGame";
 import FractionsGame from "../components/FractionsGame";
 import { motion } from "framer-motion";
-import AdminPasswordModal from "@/components/AdminPasswordModal";
-import PlayerForm from "@/components/PlayerForm";
 import GameSelection from "@/components/GameSelection";
-import LeaderboardView from "@/components/LeaderboardView";
-import { usePlayerInfo } from "@/hooks/usePlayerInfo";
-import { useLeaderboard } from "@/hooks/useLeaderboard";
+import { getCurrentLevel, resetProgress, setCurrentLevel } from "@/lib/progress";
 
 const Index = () => {
-  const [showStartScreen, setShowStartScreen] = useState(true);
   const [selectedGame, setSelectedGame] = useState<string | null>(null);
   const [operationType, setOperationType] = useState("soma");
-  const [showLeaderboard, setShowLeaderboard] = useState(false);
-  const [showAdminModal, setShowAdminModal] = useState(false);
-  
-  const { playerInfo, savePlayerInfo, clearPlayerInfo } = usePlayerInfo();
-  const { leaderboardEntries, isLoading, loadLeaderboardData, clearLeaderboard } = useLeaderboard();
+  const [level, setLevel] = useState<number>(getCurrentLevel());
+  const [runKey, setRunKey] = useState(0);
 
   useEffect(() => {
     document.title = "Pense Matemática";
   }, []);
 
-  const startFractions = () => {
-    setSelectedGame("fractions");
-    setShowStartScreen(false);
+  const selectLevel = (l: number) => {
+    setCurrentLevel(l);
+    setLevel(l);
   };
 
-  const startArithmetic = (tipo: string) => {
-    setOperationType(tipo);
-    setSelectedGame("arithmetic");
-    setShowStartScreen(false);
-  };
-  
-  const returnToHome = () => {
-    setSelectedGame(null);
-    setShowStartScreen(true);
-    setShowLeaderboard(false);
-  };
-  
-  const handleViewLeaderboard = () => {
-    setShowAdminModal(true);
+  const returnToHome = () => setSelectedGame(null);
+
+  const nextLevel = () => {
+    selectLevel(Math.min(9, level + 1));
+    setRunKey((k) => k + 1);
   };
 
-  const handleAdminSuccess = async () => {
-    setShowAdminModal(false);
-    await loadLeaderboardData();
-    setShowLeaderboard(true);
+  const newGame = () => {
+    resetProgress();
+    setLevel(0);
   };
 
   if (selectedGame === "arithmetic") {
     return (
       <div className="bg-transparent min-h-screen">
-        <ArithmeticGame initialOperationType={operationType} onReturnHome={returnToHome} />
+        <ArithmeticGame key={runKey} initialOperationType={operationType} onReturnHome={returnToHome} onNextLevel={nextLevel} />
       </div>
     );
   }
@@ -62,19 +43,8 @@ const Index = () => {
   if (selectedGame === "fractions") {
     return (
       <div className="bg-transparent min-h-screen">
-        <FractionsGame onReturnHome={returnToHome} />
+        <FractionsGame key={runKey} onReturnHome={returnToHome} onNextLevel={nextLevel} />
       </div>
-    );
-  }
-  
-  if (showLeaderboard) {
-    return (
-      <LeaderboardView
-        entries={leaderboardEntries}
-        isLoading={isLoading}
-        onReturnHome={returnToHome}
-        onClearLeaderboard={clearLeaderboard}
-      />
     );
   }
 
@@ -86,52 +56,35 @@ const Index = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <motion.div
-          className="text-center mb-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
+        <div className="text-center mb-6">
           <div className="flex justify-center gap-3 text-5xl md:text-6xl mb-3">
-            <span className="float-anim" style={{ animationDelay: "0s" }}>🧠</span>
+            <span className="float-anim">🧠</span>
             <span className="float-anim" style={{ animationDelay: "0.5s" }}>✨</span>
             <span className="float-anim" style={{ animationDelay: "1s" }}>🚀</span>
             <span className="float-anim" style={{ animationDelay: "1.5s" }}>🌟</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold rainbow-text">
-            Pense Matemática
-          </h1>
+          <h1 className="text-4xl md:text-6xl font-bold rainbow-text">Pense Matemática</h1>
           <p className="text-muted-foreground mt-3 text-lg">
-            <span className="wiggle-anim">🎉</span> Aprenda brincando no universo dos números! <span className="wiggle-anim">🎈</span>
+            <span className="wiggle-anim">🎉</span> Aprenda brincando no universo dos números!{" "}
+            <span className="wiggle-anim">🎈</span>
           </p>
-        </motion.div>
-        
-        {!playerInfo ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="mb-6"
-          >
-            <PlayerForm onSubmitPlayerInfo={savePlayerInfo} />
-          </motion.div>
-        ) : (
-          <GameSelection
-            playerName={playerInfo.name}
-            playerGrade={playerInfo.grade}
-            onStartFractions={startFractions}
-            onStartArithmetic={startArithmetic}
-            onViewLeaderboard={handleViewLeaderboard}
-            onChangeLevel={clearPlayerInfo}
-          />
-        )}
+        </div>
+
+        <GameSelection
+          selectedLevel={level}
+          onSelectLevel={selectLevel}
+          onStartFractions={() => {
+            setRunKey((k) => k + 1);
+            setSelectedGame("fractions");
+          }}
+          onStartArithmetic={(tipo) => {
+            setOperationType(tipo);
+            setRunKey((k) => k + 1);
+            setSelectedGame("arithmetic");
+          }}
+          onNewGame={newGame}
+        />
       </motion.div>
-      
-      <AdminPasswordModal 
-        isOpen={showAdminModal}
-        onClose={() => setShowAdminModal(false)}
-        onSuccess={handleAdminSuccess}
-      />
     </div>
   );
 };
