@@ -6,7 +6,7 @@ import FractionDropZone from "./FractionDropZone";
 import PizzaFraction from "./PizzaFraction";
 import { Button } from "@/components/ui/button";
 import { getFractionRangeByGrade, generateNumberInRange } from "@/utils/gradeRanges";
-import { saveScoreToLeaderboard, saveProgress } from "@/lib/supabase";
+import ClassifyFraction from "./ClassifyFraction";
 
 interface GamePlayScreenProps {
   currentLevel: number;
@@ -95,6 +95,10 @@ const GamePlayScreen: React.FC<GamePlayScreenProps> = ({
     }
   };
 
+  const grade = parseInt(JSON.parse(localStorage.getItem("playerInfo") || "{}").grade || "1");
+  // A partir do nível 3, metade das perguntas são sobre Próprias / Impróprias / Aparentes
+  const isClassify = grade >= 3 && currentLevel % 2 === 1;
+
   if (fractionSequence.length === 0 || currentLevel >= fractionSequence.length) {
     return <div>Carregando...</div>;
   }
@@ -108,7 +112,7 @@ const GamePlayScreen: React.FC<GamePlayScreenProps> = ({
     >
       <div className="bg-white p-4 rounded-xl shadow-md mb-4 w-full max-w-md mx-auto flex justify-between items-center">
         <div className="text-lg font-medium">
-          <span className="text-game-primary">Nível {currentLevel + 1}</span> / {maxLevels}
+          <span className="text-game-primary">Pergunta {currentLevel + 1}</span> / {maxLevels}
         </div>
         <div className="text-lg font-semibold">
           Pontos: <span className={score >= 0 ? "text-game-correct" : "text-game-wrong"}>{score}</span>
@@ -123,11 +127,7 @@ const GamePlayScreen: React.FC<GamePlayScreenProps> = ({
         {onReturnHome && (
           <Button 
             variant="outline"
-            onClick={async () => {
-              await saveScoreToLeaderboard(score, "Frações");
-              await saveProgress(score, "frações", currentLevel, maxLevels);
-              if (onReturnHome) onReturnHome();
-            }}
+            onClick={() => onReturnHome && onReturnHome()}
             className="border-game-primary text-game-primary hover:bg-game-primary hover:text-white"
             size="sm"
           >
@@ -136,6 +136,14 @@ const GamePlayScreen: React.FC<GamePlayScreenProps> = ({
         )}
       </div>
 
+      {isClassify ? (
+        <ClassifyFraction
+          key={currentLevel}
+          onCorrect={() => { playCorrect(); onCorrectAnswer(); }}
+          onWrong={() => { playWrong(); onWrongAnswer(); }}
+        />
+      ) : (
+      <>
       <PizzaFraction fraction={fractionSequence[currentLevel]} />
 
       <div className="w-full max-w-lg mb-6 mx-auto flex justify-center">
@@ -151,6 +159,8 @@ const GamePlayScreen: React.FC<GamePlayScreenProps> = ({
           <Fraction key={index} value={option} onDragStart={() => {}} />
         ))}
       </div>
+      </>
+      )}
     </motion.div>
   );
 };
