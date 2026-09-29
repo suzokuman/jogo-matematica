@@ -1,98 +1,99 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
+import { getLevelSummary } from "@/lib/progress";
 
 interface GameSelectionProps {
-  playerName: string;
-  playerGrade: string;
+  selectedLevel: number;
+  onSelectLevel: (level: number) => void;
   onStartFractions: () => void;
   onStartArithmetic: (tipo: string) => void;
-  onViewLeaderboard: () => void;
-  onChangeLevel: () => void;
+  onNewGame: () => void;
 }
 
 const GameSelection: React.FC<GameSelectionProps> = ({
-  playerName,
-  playerGrade,
+  selectedLevel,
+  onSelectLevel,
   onStartFractions,
   onStartArithmetic,
-  onViewLeaderboard,
-  onChangeLevel,
+  onNewGame,
 }) => {
   const [showArithmeticMenu, setShowArithmeticMenu] = useState(false);
 
-  const toggleArithmeticMenu = () => {
-    setShowArithmeticMenu(prev => !prev);
-  };
-
   return (
-    <motion.div 
-      className="flex flex-col gap-6"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.4 }}
-    >
-      <p className="text-xl mb-2">
-        Olá, <span className="font-bold neon-text-pink">{playerName}</span> — <span className="font-bold neon-text">Nível {playerGrade}</span>! 👋
-      </p>
-      <p className="text-lg mb-4">🎮 Escolha um jogo para começar:</p>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Button 
-          className="game-button py-6 text-xl"
-          onClick={onStartFractions}
+    <motion.div className="flex flex-col gap-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <div className="flex justify-between items-center flex-wrap gap-3">
+        <p className="text-lg">🎯 Selecione o Nível:</p>
+        <Button
+          variant="outline"
+          onClick={() => {
+            if (window.confirm("Começar um novo jogo? Todo o progresso será apagado.")) onNewGame();
+          }}
+          className="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground font-bold"
         >
-          🍕 Frações
-        </Button>
-        
-        <Button 
-          className="game-button py-6 text-xl"
-          onClick={toggleArithmeticMenu}
-        >
-          ➕ Aritmética Básica
+          🔄 NOVO JOGO
         </Button>
       </div>
-      
-      {showArithmeticMenu && (
-        <motion.div 
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-2"
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          transition={{ duration: 0.3 }}
-        >
-          {[
-            { tipo: "soma", emoji: "➕", label: "Soma" },
-            { tipo: "subtracao", emoji: "➖", label: "Subtração" },
-            { tipo: "multiplicacao", emoji: "✖️", label: "Multiplicação" },
-            { tipo: "divisao", emoji: "➗", label: "Divisão" },
-          ].map(({ tipo, emoji, label }) => (
-            <Button 
-              key={tipo}
-              className="game-button py-4"
-              onClick={() => onStartArithmetic(tipo)}
+
+      <div className="flex flex-col gap-2">
+        {Array.from({ length: 9 }, (_, i) => i + 1).map((level) => {
+          const { percent, score } = getLevelSummary(level);
+          const active = level === selectedLevel;
+          return (
+            <button
+              key={level}
+              type="button"
+              onClick={() => onSelectLevel(level)}
+              className={`w-full text-left rounded-xl border-2 px-4 py-3 transition-all ${
+                active ? "border-primary bg-primary/15 scale-[1.01]" : "border-border bg-card/40 hover:border-primary/60"
+              }`}
             >
-              {emoji} {label}
-            </Button>
-          ))}
-        </motion.div>
-      )}
-      
-      <div className="flex gap-4 mt-4">
-        <Button 
-          variant="outline"
-          onClick={onChangeLevel}
-          className="border-game-secondary text-game-secondary hover:bg-game-secondary hover:text-white"
-        >
-          Mudar Nível
-        </Button>
-        <Button 
-          variant="outline"
-          onClick={onViewLeaderboard}
-        >
-          Ver Histórico de Pontuações (Admin)
-        </Button>
+              <div className="flex justify-between items-center mb-2 gap-2">
+                <span className="font-bold text-lg">
+                  {active ? "⭐ " : ""}Nível {level}
+                </span>
+                <span className="text-sm font-semibold">
+                  {percent}% · {score} pontos
+                </span>
+              </div>
+              <Progress value={percent} className="h-3" />
+            </button>
+          );
+        })}
       </div>
+
+      {selectedLevel > 0 ? (
+        <>
+          <p className="text-lg">
+            🎮 Escolha um jogo para o <span className="font-bold neon-text">Nível {selectedLevel}</span>:
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Button className="game-button py-6 text-xl" onClick={onStartFractions}>
+              🍕 Frações
+            </Button>
+            <Button className="game-button py-6 text-xl" onClick={() => setShowArithmeticMenu((p) => !p)}>
+              ➕ Aritmética Básica
+            </Button>
+          </div>
+          {showArithmeticMenu && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { tipo: "soma", emoji: "➕", label: "Soma" },
+                { tipo: "subtracao", emoji: "➖", label: "Subtração" },
+                { tipo: "multiplicacao", emoji: "✖️", label: "Multiplicação" },
+                { tipo: "divisao", emoji: "➗", label: "Divisão" },
+              ].map(({ tipo, emoji, label }) => (
+                <Button key={tipo} className="game-button py-4" onClick={() => onStartArithmetic(tipo)}>
+                  {emoji} {label}
+                </Button>
+              ))}
+            </div>
+          )}
+        </>
+      ) : (
+        <p className="text-center text-muted-foreground">Clique em um nível para começar.</p>
+      )}
     </motion.div>
   );
 };
