@@ -6,7 +6,6 @@ import DropZone from "./DropZone";
 import { useSoundEffects } from "./SoundEffects";
 import { Button } from "@/components/ui/button";
 import { createGradeSpecificProblem } from "@/utils/gradeProblems";
-import { saveScoreToLeaderboard, saveProgress } from "@/lib/supabase";
 
 interface GameScreenProps {
   currentLevel: number;
@@ -182,7 +181,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
     >
       <div className="cosmic-card !p-4 mb-4 w-full max-w-md flex justify-between items-center">
         <div className="text-lg font-medium">
-          <span className="neon-text-pink">Nível {currentLevel + 1}</span>
+          <span className="neon-text-pink">Pergunta {currentLevel + 1}</span>
           <span className="text-muted-foreground"> / {maxLevels}</span>
         </div>
         <div className="text-lg font-semibold">
@@ -199,11 +198,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
         {onReturnHome && (
           <Button
             variant="outline"
-            onClick={async () => {
-              await saveScoreToLeaderboard(score, operationType);
-              await saveProgress(score, operationType, currentLevel, maxLevels);
-              if (onReturnHome) onReturnHome();
-            }}
+            onClick={() => onReturnHome && onReturnHome()}
             size="sm"
             className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
           >
