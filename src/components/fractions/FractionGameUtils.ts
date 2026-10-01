@@ -12,16 +12,30 @@ const generateFractionsByDifficulty = () => {
   const range = getFractionRangeByGrade();
   const fractions: string[] = [];
   const generatedSet = new Set<string>();
-  
-  console.log(`Generating fractions for grade range: ${range.min}-${range.max}`);
-  
+
+  const playerInfo = JSON.parse(localStorage.getItem("playerInfo") || "{}");
+  const grade = parseInt(playerInfo.grade || "1");
+
+  // A partir do nível 6: frações impróprias representadas por mais de uma pizza
+  // Níveis 6-7: até 2 pizzas | Níveis 8-9: até 3 pizzas
+  const maxPizzas = grade >= 8 ? 3 : grade >= 6 ? 2 : 1;
+
+  console.log(`Generating fractions for grade range: ${range.min}-${range.max}, maxPizzas: ${maxPizzas}`);
+
   // Generate 20 unique fractions within the EXACT range
   while (fractions.length < 20) {
-    const numerator = generateNumberInRange(range.min, range.max);
-    const denominator = generateNumberInRange(range.min, range.max);
-    
-    // Ensure numerator < denominator for proper fractions
-    if (numerator < denominator) {
+    const denominator = generateNumberInRange(Math.max(2, range.min), range.max);
+    let numerator: number;
+
+    if (maxPizzas === 1) {
+      // Frações próprias: numerador < denominador
+      numerator = generateNumberInRange(range.min, denominator - 1);
+    } else {
+      // Frações impróprias: numerador > denominador, até maxPizzas pizzas
+      numerator = generateNumberInRange(denominator + 1, denominator * maxPizzas);
+    }
+
+    if (numerator >= 1 && numerator !== denominator) {
       const fraction = `${numerator}/${denominator}`;
       if (!generatedSet.has(fraction)) {
         generatedSet.add(fraction);
@@ -30,7 +44,7 @@ const generateFractionsByDifficulty = () => {
       }
     }
   }
-  
+
   return fractions;
 };
 
