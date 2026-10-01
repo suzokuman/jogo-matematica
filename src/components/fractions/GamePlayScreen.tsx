@@ -39,24 +39,27 @@ const GamePlayScreen: React.FC<GamePlayScreenProps> = ({
     const options = new Set([correct]);
     const range = getFractionRangeByGrade();
     const [correctNum, correctDen] = correct.split("/").map(Number);
-    const maxDiff = Math.max(2, Math.floor((range.max - range.min) / 4));
-    function gcd(a: number, b: number): number {
-      return b === 0 ? a : gcd(b, a % b);
-    }
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo") || "{}");
+    const grade = parseInt(playerInfo.grade || "1");
+    const maxPizzas = grade >= 8 ? 3 : grade >= 6 ? 2 : 1;
     function isEquivalent(n1: number, d1: number, n2: number, d2: number) {
       return n1 * d2 === n2 * d1;
     }
     while (options.size < 6) {
-      let n = generateNumberInRange(range.min, range.max);
-      let d = generateNumberInRange(range.min, range.max);
-      if (n < d && d - n <= maxDiff) {
-        // Evita frações equivalentes à correta
-        if (isEquivalent(n, d, correctNum, correctDen)) continue;
-        // Evita frações já presentes
-        const fraction = `${n}/${d}`;
-        if (!options.has(fraction)) {
-          options.add(fraction);
-        }
+      const d = generateNumberInRange(Math.max(2, range.min), range.max);
+      let n: number;
+      if (maxPizzas === 1) {
+        n = generateNumberInRange(range.min, d - 1);
+      } else {
+        n = generateNumberInRange(d + 1, d * maxPizzas);
+      }
+      if (n < 1 || n === d) continue;
+      // Evita frações equivalentes à correta
+      if (isEquivalent(n, d, correctNum, correctDen)) continue;
+      // Evita frações já presentes
+      const fraction = `${n}/${d}`;
+      if (!options.has(fraction)) {
+        options.add(fraction);
       }
     }
     return Array.from(options).sort(() => Math.random() - 0.5);
